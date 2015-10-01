@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ public class SearchFragment extends Fragment {
     public View view;
     public EditText editText;
     public Button button;
-    public ArrayList<String> links;
+    public ArrayList<String> links = new ArrayList<>();;
     public DbAccessor dbAccessor;
 
     public SearchFragment() {
@@ -33,8 +34,18 @@ public class SearchFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_search, container, false);
         editText = (EditText)view.findViewById(R.id.editText);
         button = (Button)view.findViewById(R.id.search_button);
-        dbAccessor = new DbAccessor(getContext());
 
+        dbAccessor = new DbAccessor(getContext());
+        if (!links.isEmpty()) {
+            GridView gridView = (GridView) view.findViewById(R.id.gridView);
+            gridView.setAdapter(new ImageAdapter(getContext(), links));
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    openAdder(links.get(position)).show();
+                }
+            });
+        }
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +70,7 @@ public class SearchFragment extends Fragment {
                 gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        openAdder(images.get(position));
+                        openAdder(images.get(position)).show();
                     }
                 });
                 links = images;
@@ -71,7 +82,6 @@ public class SearchFragment extends Fragment {
     public AlertDialog openAdder(final String url) {
         AlertDialog.Builder addBuilder = new AlertDialog.Builder(getContext());
         addBuilder.setTitle(R.string.add_question);
-        // addBuilder.setMessage("Name of new item:");
 
         addBuilder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override

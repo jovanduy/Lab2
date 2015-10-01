@@ -16,9 +16,8 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + FeedReaderContract.FeedEntry.TABLE_NAME + " (" +
-                    FeedReaderContract.FeedEntry._ID + " INTEGER PRIMARY KEY," +
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_URL + TEXT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry._ID + " INTEGER PRIMARY KEY, " +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_URL + TEXT_TYPE +
             " )";
 
     private static final String SQL_DELETE_ENTRIES =

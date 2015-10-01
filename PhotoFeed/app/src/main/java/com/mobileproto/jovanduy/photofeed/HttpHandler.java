@@ -54,8 +54,8 @@ public class HttpHandler {
                             for (int i=0; i<images.length(); i++) {
                                 JSONObject image = (JSONObject) images.get(i);
                                 String link = image.getString("link");
-                                Log.d("Link", link);
                                 links.add(link);
+
                             }
                         } catch (Exception e) {
                             callback.callback(false, null);

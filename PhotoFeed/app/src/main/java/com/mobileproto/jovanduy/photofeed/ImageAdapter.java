@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -39,25 +42,23 @@ public class ImageAdapter extends BaseAdapter {
 
 
     /**
-     * create a new WebView for each item referenced by the Adapter
+     * create a new ImageView for each item referenced by the Adapter
      * @param position
      * @param convertView
      * @param parent
      * @return WebView of item
      */
     public View getView(int position, View convertView, ViewGroup parent) {
-        WebView webView;
+        ImageView imageView;
         if (convertView == null) {
-            webView = new WebView(context);
-            webView.setInitialScale(35);
-            webView.setLayoutParams(new GridView.LayoutParams(350, 350));
-            webView.setPadding(3,3,3,3);
+            imageView = new ImageView(context);
+            imageView.setLayoutParams(new GridView.LayoutParams(350, 350));
         } else {
-            webView = (WebView) convertView;
+            imageView = (ImageView) convertView;
         }
 
-        webView.loadUrl(links.get(position));
-        return webView;
+        Picasso.with(context).load(links.get(position)).into(imageView);
+        return imageView;
     }
 
 }
