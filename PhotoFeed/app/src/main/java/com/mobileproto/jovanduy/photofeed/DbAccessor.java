@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Created by Jordan on 9/30/15.
  */
@@ -28,7 +31,7 @@ public class DbAccessor {
         }
     }
 
-    public String readFromDb(int position) {
+    public ArrayList<String> readFromDb() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String[] columnsToQuery = {
                 FeedReaderContract.FeedEntry._ID,
@@ -45,13 +48,34 @@ public class DbAccessor {
                 null,
                 null
         );
-        cursor.moveToPosition(position);
-        return cursor.getString(cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_URL));
+        cursor.moveToFirst();
+        ArrayList<String> images = new ArrayList<>();
+        images.add(cursor.getString(cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_URL)));
+        while (cursor.moveToNext()) {
+            images.add(cursor.getString(cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_URL)));
+        }
+        return images;
     }
 
     public void deleteFromDb(int position) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String selection = FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID + " LIKE ?";
+//        String[] columnsToQuery = {
+//                FeedReaderContract.FeedEntry._ID,
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_URL
+//        };
+//        Cursor cursor = db.query(
+//                FeedReaderContract.FeedEntry.TABLE_NAME,
+//                columnsToQuery,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null
+//        );
+//        cursor.moveToPosition(position);
+//        long pos = cursor.getLong(
+//                cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
+        String selection = FeedReaderContract.FeedEntry._ID + " LIKE ?";
         String[] selectionArgs = { String.valueOf(position) };
         db.delete(FeedReaderContract.FeedEntry.TABLE_NAME, selection, selectionArgs);
     }
