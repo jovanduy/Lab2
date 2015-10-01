@@ -3,7 +3,7 @@ package com.mobileproto.jovanduy.photofeed;
 import android.provider.BaseColumns;
 
 /**
- * Created by Jordan on 9/27/15.
+ * Contract class for constants of database
  */
 public final class FeedReaderContract {
 

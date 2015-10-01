@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
- * Created by Jordan on 9/30/15.
+ * Custom Adapter for Images that has an ArrayList to hold images
  */
 public class ImageAdapter extends BaseAdapter {
 
@@ -25,11 +25,20 @@ public class ImageAdapter extends BaseAdapter {
         this.links = images;
     }
 
+    /**
+     * returns length of ImageAdapter's ArrayList
+     * @return length of links
+     */
     @Override
     public int getCount() {
         return links.size();
     }
 
+    /**
+     * returns the item at a position in the ArrayList
+     * @param position of item
+     * @return an element of links
+     */
     @Override
     public Object getItem(int position) {
         return links.get(position);
@@ -43,10 +52,10 @@ public class ImageAdapter extends BaseAdapter {
 
     /**
      * create a new ImageView for each item referenced by the Adapter
-     * @param position
+     * @param position index of item in ArrayList
      * @param convertView
      * @param parent
-     * @return WebView of item
+     * @return ImageView of item
      */
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
@@ -57,6 +66,7 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
+        // third party tool for loading images at a url into ImageView
         Picasso.with(context).load(links.get(position)).into(imageView);
         return imageView;
     }

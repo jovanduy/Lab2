@@ -13,7 +13,7 @@ import android.widget.GridView;
 import java.util.ArrayList;
 
 /**
- * Created by Jordan on 9/30/15.
+ * Fragment to view user's photo feed
  */
 public class FeedFragment extends Fragment {
 
@@ -25,6 +25,9 @@ public class FeedFragment extends Fragment {
 
     public FeedFragment() {}
 
+    /*
+     * Creates GridView full of user's photos
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,6 +46,11 @@ public class FeedFragment extends Fragment {
         return view;
     }
 
+    /**
+     * opens AlertDialog to ask if user wants to delete selected image from feed
+     * @param position the position in the grid of the clicked image
+     * @return AlertDialog to delete image from feed
+     */
     public AlertDialog openDeleter(final int position) {
         AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getContext());
         deleteBuilder.setTitle(R.string.delete_question);

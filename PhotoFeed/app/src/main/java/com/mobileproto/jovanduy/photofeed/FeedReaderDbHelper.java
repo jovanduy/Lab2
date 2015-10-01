@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by Jordan on 9/27/15.
+ * Class containing some database constants for running SQL commands
  */
 public class FeedReaderDbHelper extends SQLiteOpenHelper {
 

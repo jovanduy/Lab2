@@ -13,6 +13,10 @@ public class MainActivity extends AppCompatActivity {
     public SearchFragment searchFragment = new SearchFragment();
     public FeedFragment feedFragment = new FeedFragment();
 
+    /**
+     * change fragments
+     * @param fragment fragment to be changed to
+     */
     public void transitionToFragment(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();

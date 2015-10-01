@@ -22,11 +22,11 @@ public class SearchFragment extends Fragment {
     public View view;
     public EditText editText;
     public Button button;
-    public Button loadMoreButton;
+    public Button loadMoreButton; // load more images
     public ArrayList<String> links = new ArrayList<>();
     public DbAccessor dbAccessor;
     public String searchText;
-    public int index;
+    public int index; // start google query at this result index
 
     public SearchFragment() {
     }
@@ -104,11 +104,19 @@ public class SearchFragment extends Fragment {
 
     }
 
+    /**
+     * loads next 9 results from google
+     */
     public void loadMore() {
         index +=9;
         makeRequestWithCallback(searchText);
     }
 
+    /**
+     * opens AlertDialog to ask if user wants to add selected image to feed
+     * @param url URL of image clicked
+     * @return AlertDialog to add image to feed
+     */
     public AlertDialog openAdder(final String url) {
         AlertDialog.Builder addBuilder = new AlertDialog.Builder(getContext());
         addBuilder.setTitle(R.string.add_question);
