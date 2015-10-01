@@ -22,8 +22,11 @@ public class SearchFragment extends Fragment {
     public View view;
     public EditText editText;
     public Button button;
-    public ArrayList<String> links = new ArrayList<>();;
+    public Button loadMoreButton;
+    public ArrayList<String> links = new ArrayList<>();
     public DbAccessor dbAccessor;
+    public String searchText;
+    public int index;
 
     public SearchFragment() {
     }
@@ -34,23 +37,37 @@ public class SearchFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_search, container, false);
         editText = (EditText)view.findViewById(R.id.editText);
         button = (Button)view.findViewById(R.id.search_button);
+        loadMoreButton = (Button)view.findViewById(R.id.load_more_button);
+        loadMoreButton.setVisibility(View.INVISIBLE);
+        index = 1;
 
         dbAccessor = new DbAccessor(getContext());
         if (!links.isEmpty()) {
             GridView gridView = (GridView) view.findViewById(R.id.gridView);
             gridView.setAdapter(new ImageAdapter(getContext(), links));
+            loadMoreButton.setVisibility(View.VISIBLE);
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     openAdder(links.get(position)).show();
                 }
             });
+            loadMoreButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loadMore();
+                }
+            });
         }
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String searchText = editText.getText().toString();
-                makeRequestWithCallback(searchText);
+                searchText = editText.getText().toString();
+                if (searchText != null && !searchText.isEmpty()) {
+                    index = 1;
+                    links.clear();
+                    makeRequestWithCallback(searchText);
+                }
             }
         });
         return view;
@@ -62,21 +79,34 @@ public class SearchFragment extends Fragment {
      */
     public void makeRequestWithCallback(String search) {
         HttpHandler handler = new HttpHandler(getContext());
-        handler.searchImages(search, new Callback() {
+        handler.searchImages(search, index, new Callback() {
             @Override
             public void callback(boolean success, final ArrayList<String> images) {
                 GridView gridView = (GridView) view.findViewById(R.id.gridView);
-                gridView.setAdapter(new ImageAdapter(getContext(), images));
+                links.addAll(images);
+                gridView.setAdapter(new ImageAdapter(getContext(), links));
+                loadMoreButton.setVisibility(View.VISIBLE);
                 gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         openAdder(images.get(position)).show();
                     }
                 });
-                links = images;
+                loadMoreButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loadMore();
+                    }
+                });
+
             }
         });
 
+    }
+
+    public void loadMore() {
+        index +=9;
+        makeRequestWithCallback(searchText);
     }
 
     public AlertDialog openAdder(final String url) {

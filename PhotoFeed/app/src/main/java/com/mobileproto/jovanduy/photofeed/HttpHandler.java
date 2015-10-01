@@ -31,7 +31,7 @@ public class HttpHandler {
      * @param searchQuery String representing what is being searched
      * @param callback callback
      */
-    public void searchImages(String searchQuery, final Callback callback) {
+    public void searchImages(String searchQuery, int startIndex, final Callback callback) {
         String query = searchQuery.replaceAll(" ", "+");
         String url = "https://www.googleapis.com/customsearch/v1";
         String key = "AIzaSyDiS0H5_uYE54YwVqBKvsz2yPbDcWNQsxw";
@@ -40,6 +40,8 @@ public class HttpHandler {
         url += "&cx=" + cx;
         url += "&q=" + query;
         url += "&searchType=image";
+        url += "&num=9";
+        url += "&start=" + String.valueOf(startIndex);
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
